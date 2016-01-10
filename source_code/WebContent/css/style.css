@@ -1,0 +1,58 @@
+   body 
+	{
+		font-size:15px; 
+		font-family:¡®Î¢ÈíÑÅºÚ¡¯£»
+	}
+	
+   #wrap {
+		width: 820px;
+		margin: 0 auto;
+	}
+	
+	#content {
+		padding: 0 15px;
+		margin: 10 auto 10 auto;
+		background: url(../imgs/content_bg.gif) repeat-x left top #ffffff;
+		color: #666666;
+		font-size:20px; 
+	}
+	
+	input.button {
+	    width:70%;
+		font-size:20px; 
+		background-color:#006400; 
+		color:#ffffff; border:0px; 
+		padding:5px;
+		font-family:¡®Î¢ÈíÑÅºÚ¡¯£»
+	}
+	
+	.buy_button {
+	font-size: 15px;
+	background-color: #ff0000;
+	color: #ffffff;
+	border: 0px;
+	padding: 5px;
+    }
+    
+    .delete_button {
+	font-size: 15px;
+	background-color: #804000;
+	color: #ffffff;
+	border: 0px;
+	padding: 5px;
+    }
+
+    .modify_button {
+	font-size: 15px;
+	background-color: #ff6100;
+	color: #ffffff;
+	border: 0px;
+	padding: 5px;
+    }
+    
+	/* .form_table style for table used in forms
+---------------------------------------------*/
+	.form_table {
+		margin-bottom: 15px;
+		font-size: 1.1em;
+	}

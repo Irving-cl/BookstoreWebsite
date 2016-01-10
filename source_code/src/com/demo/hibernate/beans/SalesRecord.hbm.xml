@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-5-26 10:25:36 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.demo.hibernate.beans">
+    <class name="SalesRecord" table="sales_record">
+        <id name="id" type="integer">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        <property name="bookname" column="bookname" type="string" />
+        <property name="username" column="username" type="string" />
+        <property name="num" column="num" type="integer" />
+        <property name="date" column="date" type="timestamp" />
+    </class>
+</hibernate-mapping>

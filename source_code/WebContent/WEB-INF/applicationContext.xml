@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    
+    <!--  配置数据源与事务 -->
+    <bean id="dataSource"
+        class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
+        <property name="driverClassName">
+            <value>org.gjt.mm.mysql.Driver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:mysql://localhost:3306/book_store</value>
+        </property>
+        <property name="username">
+            <value>root</value>
+        </property>
+        <property name="password">
+            <value>irving23415</value>
+        </property>
+    </bean>
+    
+    <!-- 配置Hibernate -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/demo/hibernate/beans/User.hbm.xml</value>
+				<value>com/demo/hibernate/beans/Book.hbm.xml</value>
+				<value>com/demo/hibernate/beans/Order.hbm.xml</value>
+				<value>com/demo/hibernate/beans/SalesRecord.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+    <!-- 配置事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+    
+    <!-- 定义DAO -->
+    <bean id="userDAO" class="com.demo.hibernate.dao.UserDAO">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="bookDAO" class="com.demo.hibernate.dao.BookDAO">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="orderDAO" class="com.demo.hibernate.dao.OrderDAO">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="recordDAO" class="com.demo.hibernate.dao.SalesRecordDAO">
+        <property name="sessionFactory">
+            <ref local="sessionFactory" />
+        </property>
+    </bean>
+    
+    <!-- 定义DAO代理 -->
+	<bean id="UserDAOProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="userDAO" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="BookDAOProxy"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="bookDAO" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+    
+	
+    <!-- 定义Struts配置 -->
+	<bean name="/login" class="com.demo.struts.actions.LoginAction">
+		<property name="userDAO">
+			<ref local="userDAO" />
+		</property>
+		<property name="bookDAO">
+			<ref local="bookDAO" />
+		</property>
+	</bean>
+	<bean name="/logout" class="com.demo.struts.actions.LogoutAction">
+		<property name="userDAO">
+			<ref local="userDAO" />
+		</property>
+	</bean>
+	<bean name="/register"
+		class="com.demo.struts.actions.RegisterAction">
+		<property name="userDAO">
+			<ref local="userDAO" />
+		</property>
+	</bean>
+	<bean name="/admin"
+	    class="com.demo.struts.actions.AdminAction">
+	    <property name="userDAO">
+	        <ref local="userDAO" /> 
+	    </property>
+	    <property name="bookDAO">
+			<ref local="bookDAO" />
+		</property>
+	</bean>
+	<bean name="/modify"
+	    class="com.demo.struts.actions.ModifyUserAction">
+	    <property name="userDAO">
+	        <ref local="userDAO" /> 
+	    </property>
+	    <property name="bookDAO">
+			<ref local="bookDAO" />
+		</property>
+	</bean>
+	<bean name="/add_book"
+	    class="com.demo.struts.actions.AddBookAction">
+	    <property name="bookDAO">
+	        <ref local="bookDAO" /> 
+	    </property>
+	</bean>
+	<bean name="/modify_book"
+	    class="com.demo.struts.actions.ModifyBookAction">
+	    <property name="userDAO">
+	        <ref local="userDAO" /> 
+	    </property>
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	</bean>
+	<bean name="/shoppingcart"
+	   class="com.demo.struts.actions.ShoppingCartAction">
+	   <property name="orderDAO">
+	        <ref local="orderDAO" /> 
+	    </property>
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	    <property name="recordDAO">
+	        <ref local="recordDAO" />
+	    </property>
+	</bean>
+	<bean name="/buybook"
+	    class="com.demo.struts.actions.BuyBookAction">
+	    <property name="orderDAO">
+	        <ref local="orderDAO" /> 
+	    </property>
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	</bean>
+	<bean name="/back"
+	    class="com.demo.struts.actions.BackAction">
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	</bean>
+	<bean name="/modify_order"
+	    class="com.demo.struts.actions.ModifyOrderAction">
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	    <property name="orderDAO">
+	        <ref local="orderDAO" />
+	    </property>
+	</bean>
+	<bean name="/search_record"
+	    class="com.demo.struts.actions.SearchRecordAction">
+	    <property name="recordDAO">
+	        <ref local="recordDAO" />
+	    </property>
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	</bean>
+	<bean name="/search_book"
+	    class="com.demo.struts.actions.SearchBookAction">
+	    <property name="bookDAO">
+	        <ref local="bookDAO" />
+	    </property>
+	</bean>
+	<bean name="/modify_profile"
+	    class="com.demo.struts.actions.ModifyProfileAction">
+	</bean>
+</beans>

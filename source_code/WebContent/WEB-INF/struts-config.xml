@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+<!-- Data Source Configuration -->
+    
+<!-- Form Bean Definitions -->
+    <form-beans>
+        <form-bean name="loginForm"
+        type="com.demo.struts.forms.LoginForm">
+        </form-bean>
+        <form-bean name="registerForm"
+        type="com.demo.struts.forms.RegisterForm">
+        </form-bean>
+        <form-bean name="bookForm"
+        type="com.demo.struts.forms.BookForm">
+        </form-bean>
+    </form-beans>
+
+
+<!-- Global Exception Definitions -->
+    <global-exceptions>
+    </global-exceptions>
+
+
+<!-- Global Forward Definitions -->
+    <global-forwards>
+        <forward name="welcome" path="/Welcome.do"/>
+    </global-forwards>
+
+<!-- Action Mapping Definitions -->
+    <action-mappings>
+        <action path="/index" forward="/login.jsp"/>
+        <action path="/login" name="loginForm" scope="request" 
+         type="org.springframework.web.struts.DelegatingActionProxy" input="/login.jsp">
+         <forward name="success" path="/welcome.jsp" />
+         <forward name="failure" path="/login.jsp" />
+        </action>
+        <action path="/logout" 
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="logout" path="/login.jsp" redirect="true" />
+        </action>
+        <action path="/register" parameter="method" name="registerForm"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy"
+         input="/register.jsp">
+         <forward name="success" path="/login.jsp" />
+         <forward name="failure" path="/register.jsp" />
+        </action>
+        <action path="/admin" scope="request" parameter="method"
+         type="org.springframework.web.struts.DelegatingActionProxy"
+         input="/admin.jsp">
+         <forward name="success" path="/admin.jsp" />
+         <forward name="logout" path="/login.jsp" />
+        </action>
+        <action path="/modify" parameter="method" name="loginForm"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy"
+         input="/admin.jsp">
+         <forward name="success" path="/admin.jsp" />
+        </action>
+        <action path="/add_book" parameter="method" name="bookForm"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy"
+         input="/add_book.jsp">
+         <forward name="success" path="/add_book.jsp" />
+        </action>
+        <action path="/modify_book" parameter="method" name="bookForm"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy"
+         input="/modify_book.jsp">
+         <forward name="success" path="/modify_book.jsp" />
+         <forward name="go_back" path="/admin.jsp" />
+        </action>
+        <action path="/shoppingcart" parameter="method"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/shoppingcart.jsp" />
+        </action>
+        <action path="/buybook" parameter="method"
+         scope="request" type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/book_detail.jsp" />
+         <forward name="go_back" path="/shoppingcart.jsp" />
+        </action>
+        <action path="/back" scope="request"
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/welcome.jsp" />
+        </action>
+        <action path="/modify_order" scope="request" parameter="method"
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/modify_order.jsp" />
+         <forward name="go_back" path="/shoppingcart.jsp" />
+        </action>
+        <action path="/search_record" scope="request" 
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/search_record.jsp" />
+        </action>
+        <action path="/search_book" scope="request" 
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/welcome.jsp" />
+        </action>
+        <action path="/modify_profile" parameter="method" scope="request"
+         type="org.springframework.web.struts.DelegatingActionProxy">
+         <forward name="success" path="/user_profile.jsp" />
+        </action>
+    </action-mappings>
+
+<!-- Controller Configuration -->
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+<!-- Message Resources Definitions -->
+    <message-resources parameter="com.demo.struts.resources.ApplicationResources" />
+
+<!-- Tiles plugin -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+      <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+      <set-property property="moduleAware" value="true" />
+    </plug-in>
+
+<!-- Validator plugin -->
+  
+
+</struts-config>
+

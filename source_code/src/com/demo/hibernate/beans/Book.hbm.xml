@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-5-26 10:25:36 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping package="com.demo.hibernate.beans">
+    <class name="Book" table="book">
+        <id name="bookname" type="string">
+            <column name="bookname" />
+            <generator class="assigned" />
+        </id>
+        <property name="img_name" column="img_name" type="string" />
+        <property name="category" column="category" type="string" />
+        <property name="description" column="description" type="string" />
+        <property name="price" column="price" type="float" />
+        <property name="stock_num" column="stock_num" type="int" />
+    </class>
+</hibernate-mapping>
